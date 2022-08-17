@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
-import { Chess } from 'chess.js'
+import jsChessEngine from 'js-chess-engine'
 
-const chess = new Chess()
+let game = new jsChessEngine.Game()
 
-export async function test (req: Request, res: Response) {
-  
-  while (!chess.game_over()) {
-    const moves = chess.moves()
-    const move = moves[Math.floor(Math.random() * moves.length)]
-    chess.move(move)
-  }
-
-  console.log(chess.pgn())
+export async function createGame (req: Request, res: Response) {
+  game = new jsChessEngine.Game()
   res.sendStatus(200)
+}
+
+
+export async function move (req: Request, res: Response) {
+  const {from, to} = req.body
+  game.move(from, to)
+  await game.aiMove(3)
+  res.status(200).send(game)
 }
