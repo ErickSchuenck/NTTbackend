@@ -13,5 +13,6 @@ export async function move (req: Request, res: Response) {
   const {from, to} = req.body
   game.move(from, to)
   await game.aiMove(3)
-  res.status(200).send(game)
+  const lastIndex = game.board.history.length -1
+  res.status(200).send(game.board.history[lastIndex])
 }
