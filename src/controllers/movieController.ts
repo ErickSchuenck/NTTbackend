@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import axios from "axios";
-
-const URL = `https://omdbapi.com/?s=whiplash&page=1&apikey=e576b8e9`;
+import { notFoundError } from "../utils/errorUtils.js";
+import { key } from "../config/URLconfig.js";
 
 export async function getMovieInfoByName(req: Request, res: Response) {
+  const movie = req.body;
+  const URL = `https://www.omdbapi.com/?t=${movie}&plot=full&apikey=${key}`;
   let movieInfos = await axios.get(URL).then((response) => response.data);
-  console.log(movieInfos);
+  if (!movieInfos) throw notFoundError;
   res.send(movieInfos).status(200);
 }
