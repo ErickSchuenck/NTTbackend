@@ -34,11 +34,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import axios from "axios";
+import { notFoundError } from "../utils/errorUtils.js";
+import { key } from "../config/URLconfig.js";
 export function getMovieInfoByName(req, res) {
     return __awaiter(this, void 0, void 0, function () {
+        var movie, URL, movieInfos;
         return __generator(this, function (_a) {
-            res.sendStatus(200);
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    movie = req.body.movie;
+                    URL = "https://www.omdbapi.com/?t=".concat(movie, "&plot=full&apikey=").concat(key);
+                    return [4 /*yield*/, axios.get(URL).then(function (response) { return response.data; })];
+                case 1:
+                    movieInfos = _a.sent();
+                    if (!movieInfos)
+                        throw notFoundError;
+                    res.send(movieInfos).status(200);
+                    return [2 /*return*/];
+            }
         });
     });
 }

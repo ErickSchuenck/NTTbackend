@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getMovieInfoByName } from "../controllers/movieController";
+import { getMovieInfoByName } from "../controllers/movieController.js";
 var movieRouter = Router();
-movieRouter.get("/movie", getMovieInfoByName);
+movieRouter.post("/movie", getMovieInfoByName);
 export default movieRouter;
